@@ -1,4 +1,8 @@
 const inquirer = require("inquirer");
+const fs = require("fs");
+const generateMarkdown = require("./utils/generateMarkdown");
+const util = require("util");
+const writeFileAsync = util.promisify(fs.writeFile);
 
 // array of questions for user
 const questions = [
@@ -50,11 +54,25 @@ const questions = [
     },
 ];
 return inquirer.prompt(questions);
+console.log(data.name);
 
 
 // function to write README file
 function writeToFile(fileName, data) {
- 
+ inqPromise = questions();
+ inqPromise.then(function(data) {
+     console.log(data.title);
+     console.log(data.gitHub);
+     let writePromise = writeFileAsync("README.md", generateMarkdown, "utf8");
+     writePromise.then(function() {
+         console.log("Successfully wrote out to README.md");
+     }).catch(function(err) {
+         console.log("Problem with writing file README.md");
+         console.log(err);
+     }).catch(function(err) {
+         console.log("Problem with inquirer.prompt")
+     });
+ })
 }
 
 // function to initialize program
