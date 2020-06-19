@@ -1,10 +1,9 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
-const util = require("util");
 const axios = require("axios")
 
 // array of questions for user
-const questions = [
+inquirer.prompt([
     {
         type: "input",
         message: "What is the title of your project?",
@@ -52,9 +51,10 @@ const questions = [
         message: "What is your email address?",
         name: "Email"
     },
-];
-return inquirer.prompt(questions).then((userInput) => {
+])
+.then((userInput) => {
     const url = `https://api.github.com/users/${userInput.username}`;
+
     axios.get(url).then(function(res) {
         const username = res.data.Email;
         const userAva = res.data.avatar_url;
@@ -1367,5 +1367,5 @@ ${data.GitHub}
 })
 .catch(function (err) {
     console.log(err);
-})
+});
 
