@@ -1,9 +1,7 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
-const generateMarkdown = require("./utils/generateMarkdown");
 const util = require("util");
 const axios = require("axios")
-const writeFileAsync = util.promisify(fs.writeFile);
 
 // array of questions for user
 const questions = [
@@ -1341,19 +1339,33 @@ See the License for the specific language governing permissions and
 limitations under the License.`
         }
 
-    })
+        let readMe = `
+# ${user.title}
+#Description
+${data.description}
+#Table of Contents
+        
+ #Installing
+${data.installing}
+#Usage
+${data.Usage}
+#License
+${data.license}
+#Contributing
+${data.author}
+#Tests
+${data.runTest}
+#Questions
+${data.email}
+${data.GitHub}
+`;
+        fs.writeFile("README.md", readMe, (err) => {
+            if (err) throw err;
+            console.log("Successfully wrote to README.md!");
+        });
+    });
+})
+.catch(function (err) {
+    console.log(err);
 })
 
-let readMe = generateMarkdown();
-// function to initialize program
-function init() {
-this.generateMarkdown.fs.writeFile("README.md!", readMe, (err) => {
-    if(err)throw err;
-    console.log("Successfully wrote to README.md!");
-}).catch(function(err) {
-    console.log(err);
-});
-}
-
-// function call to initialize program
-init();
